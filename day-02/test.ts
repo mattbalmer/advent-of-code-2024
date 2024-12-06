@@ -16,13 +16,13 @@ describe(`Day 2`, () => {
       const expected = 2;
       const result = execute(part1, TEST_DATA, format);
 
-      expect(result.length).to.equal(expected);
+      expect(result).to.equal(expected);
     });
 
     it('should give the real answer', () => {
       const result = execute(part1, DATA, format);
 
-      console.log(result.length);
+      console.log(result);
     });
   });
 
@@ -31,33 +31,31 @@ describe(`Day 2`, () => {
       const expected = 4;
       const result = execute(part2, TEST_DATA, format);
 
-      expect(result.length).to.equal(expected);
+      expect(result).to.equal(expected);
     });
 
     it('should give the real answer A', () => {
       const result = execute(part2, DATA, format);
 
-      console.log(result.filter(t => t).length);
+      console.log(result);
     });
     it('should give the real answer B', () => {
       const result = execute(part2b, DATA, format);
 
-      console.log(result.filter(t => t).length);
+      console.log(result);
     });
 
-    it('should find the mismatches', () => {
-      const result1 = execute(part2, DATA, format);
-      const result2 = execute(part2b, DATA, format);
-
-      console.log('wtf', result1.length);
-
-      result1.forEach((r, i) => {
-        if (r !== result2[i]) {
-          console.log('mismatch at ', i, r, result2[i]);
-        }
-      });
-
-      console.log(result1.filter(t => t).length, result2.filter(t => t).length);
-    });
+    // it('should find the mismatches', () => {
+    //   const result1 = execute(part2, DATA, format);
+    //   const result2 = execute(part2b, DATA, format);
+    //
+    //   result1.forEach((r, i) => {
+    //     if (r !== result2[i]) {
+    //       console.log('mismatch at ', i, r, result2[i]);
+    //     }
+    //   });
+    //
+    //   console.log(result1.filter(t => t).length, result2.filter(t => t).length);
+    // });
   });
 });

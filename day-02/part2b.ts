@@ -1,5 +1,4 @@
 import { Execute } from './format';
-import { strip, sum } from '@utils/array';
 
 const MIN = 1;
 const MAX = 3;
@@ -10,18 +9,11 @@ const getDiffs = (report: number[]): number[] => {
 
 const merge = (list: number[], i: number): number[] => {
   if (i < 0) {
-    console.log('merge', list, i, list.slice(1));
     return list.slice(1);
   }
   if (i === list.length - 1) {
-    console.log('merge', list, i, list.slice(0, list.length - 1));
     return list.slice(0, list.length - 1);
   }
-  console.log('merge', list, i, [
-    ...list.slice(0, i),
-    list[i] + list[i + 1],
-    ...list.slice(i + 2)
-  ]);
   return [
     ...list.slice(0, i),
     list[i] + list[i + 1],
@@ -42,35 +34,18 @@ const checkReportSafe = (report: number[]): boolean => {
     return true;
   }
 
-  console.log('failed', failsAt, diffs);
-
-  const [diffsLeft, diffsRight] = [
+  return [
     merge(diffs, failsAt - 1),
     merge(diffs, failsAt),
-  ];
-
-  if (checkDiffsFail(diffsLeft, sign) === -1) {
-    console.log('left passed', diffsLeft);
-    return true;
-  }
-
-  if (checkDiffsFail(diffsRight, sign) === -1) {
-    console.log('right passed', diffsRight);
-    return true;
-  }
-
-  console.log('alt failed', diffsLeft, diffsRight);
-
-  return false;
+  ].some(diffs =>
+    checkDiffsFail(diffs, sign) === -1
+  );
 }
 
 export const execute: Execute = (reports) => {
   return reports
-    .map((report, i) => {
-      console.group(`r${i}`);
-      console.log(report, 'dz', getDiffs(report));
-      const safe = checkReportSafe(report);
-      console.groupEnd();
-      return safe;
-    });
+    .filter((report, i) =>
+      checkReportSafe(report)
+    )
+    .length;
 }

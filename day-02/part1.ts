@@ -4,7 +4,7 @@ const MIN = 1;
 const MAX = 3;
 
 export const execute: Execute = (reports) => {
-  return reports.map(report => {
+  return reports.filter(report => {
     const dir = Math.sign(report[1] - report[0]);
     let last = report[0];
     for(const n of report.slice(1)) {
@@ -19,5 +19,5 @@ export const execute: Execute = (reports) => {
       last = n;
     }
     return true
-  });
+  }).length;
 }
