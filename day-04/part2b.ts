@@ -8,6 +8,11 @@ const DIRS: Coordinate[] = [
   [-1, 1],
 ];
 
+const VALS = {
+  'M': -1,
+  'S': 1,
+};
+
 const charAt = (coord: Coordinate, grid: XMAS[][], dir: Coordinate): string => {
   const [x, y] = [
     coord[0] + dir[0],
@@ -35,9 +40,9 @@ export const execute: Execute = (lines) => {
       const chars = DIRS.map(dir =>
         charAt(coord, lines, dir)
       );
-      const isLineAOK = (chars[0] === 'M' && chars[2] === 'S') || (chars[0] === 'S' && chars[2] === 'M');
-      const isLineBOK = (chars[1] === 'M' && chars[3] === 'S') || (chars[1] === 'S' && chars[3] === 'M');
-      return isLineAOK && isLineBOK;
+      const lineOneValue = VALS[chars[0]] + VALS[chars[2]];
+      const lineTwoValue = VALS[chars[1]] + VALS[chars[3]];
+      return lineOneValue === 0 && lineTwoValue === 0;
     });
 
   return explorations.filter(Boolean).length;
