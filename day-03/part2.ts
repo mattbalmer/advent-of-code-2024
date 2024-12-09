@@ -7,31 +7,28 @@ const nextInstruction = (str: string, i: number = 0) => {
 }
 
 export const execute: Execute = (lines) => {
-  return sum(
-    lines.map((line) => {
-      let i = 0;
-      let e = nextInstruction(line);
-      let doMult = true;
-      let total = 0;
+  const str = lines.join('');
+  let i = 0;
+  let e = nextInstruction(str);
+  let doMult = true;
+  let total = 0;
 
-      while(e && i < line.length) {
-        const instruction = e[0];
-        console.log(i, e);
-        i += e.index + instruction.length;
-        if (instruction === `do()`) {
-          doMult = true;
-        }
-        if (instruction === `don't()`) {
-          doMult = false;
-        }
-        if (doMult && instruction.startsWith('mul')) {
-          const [, a, b] = (/mul\((\d+),(\d+)\)/g).exec(instruction).map(Number);
-          total += a * b;
-        }
-        e = nextInstruction(line, i);
-      }
+  while(e && i < str.length) {
+    const instruction = e[0];
+    console.log(i, e);
+    i += e.index + instruction.length;
+    if (instruction === `do()`) {
+      doMult = true;
+    }
+    if (instruction === `don't()`) {
+      doMult = false;
+    }
+    if (doMult && instruction.startsWith('mul')) {
+      const [, a, b] = (/mul\((\d+),(\d+)\)/g).exec(instruction).map(Number);
+      total += a * b;
+    }
+    e = nextInstruction(str, i);
+  }
 
-      return total;
-    })
-  )
+  return total;
 }
