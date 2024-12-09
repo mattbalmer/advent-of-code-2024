@@ -21,14 +21,14 @@ const merge = (list: number[], i: number): number[] => {
   ];
 }
 
-const checkDiffsFail = (diffs: number[], sign: number): number => {
+const getFailsAt = (diffs: number[], sign: number): number => {
   return diffs.findIndex(diff => sign !== Math.sign(diff) || Math.abs(diff) < MIN || Math.abs(diff) > MAX);
 }
 
 const checkReportSafe = (report: number[]): boolean => {
   const sign = Math.sign(report[report.length - 1] - report[0]);
   const diffs = getDiffs(report);
-  const failsAt = checkDiffsFail(diffs, sign);
+  const failsAt = getFailsAt(diffs, sign);
 
   if (failsAt === -1) {
     return true;
@@ -38,7 +38,7 @@ const checkReportSafe = (report: number[]): boolean => {
     merge(diffs, failsAt - 1),
     merge(diffs, failsAt),
   ].some(diffs =>
-    checkDiffsFail(diffs, sign) === -1
+    getFailsAt(diffs, sign) === -1
   );
 }
 
