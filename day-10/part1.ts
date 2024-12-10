@@ -37,37 +37,25 @@ const getValidNeighbors = ([x, y]: Coordinate, lines: number[][]): Coordinate[] 
 }
 
 const getTrailheadScore = (trailhead: Coordinate, lines: number[][]): number => {
-  let paths = [
-    [trailhead],
+  let nodes = [
+    trailhead,
   ];
-  const visited = new Set<string>();
-  let validPaths = [];
+  const endNodes = new Set<string>();
 
-  while(paths.length > 0) {
-    const [[x, y], ...path] = paths.shift();
+  while(nodes.length > 0) {
+    const [x, y] = nodes.shift();
     const value = lines[y][x];
-    if (value === 9) {
-      validPaths.push([
-        [x, y],
-        ...path,
-      ]);
+    if (value === 9 && !endNodes.has(coordToString([x, y]))) {
+      endNodes.add(coordToString([x, y]));
     } else {
       const neighbors = getValidNeighbors([x, y], lines);
       neighbors.forEach(neighbor => {
-        if (visited.has(coordToString(neighbor))) {
-          return;
-        }
-        visited.add(coordToString(neighbor));
-        paths.unshift([
-          neighbor,
-          [x, y],
-          ...path,
-        ])
+        nodes.unshift(neighbor);
       });
     }
   }
 
-  return validPaths.length;
+  return endNodes.size;
 }
 
 export const execute: Execute = (lines) => {
